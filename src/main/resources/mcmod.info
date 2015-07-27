@@ -1,0 +1,16 @@
+[
+{
+  "modid": "technocore",
+  "name": "Techno Core",
+  "description": "Base for Techno-Mods.",
+  "version": "${version}",
+  "mcversion": "${mcversion}",
+  "url": "",
+  "updateUrl": "",
+  "authorList": ["28Smiles"],
+  "credits": "The Forge and FML guys",
+  "logoFile": "",
+  "screenshots": [],
+  "dependencies": []
+}
+]
