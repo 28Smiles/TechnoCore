@@ -1,10 +1,14 @@
 package technocore.client.gui.elements;
 
 import java.awt.Point;
+import java.util.ArrayList;
+import java.util.List;
 
 import net.minecraft.client.Minecraft;
 
 import org.lwjgl.opengl.GL11;
+
+import com.mojang.realmsclient.gui.ChatFormatting;
 
 import technocore.client.gui.TechnoCoreGui;
 
@@ -44,5 +48,15 @@ public class ScaledElement extends Element {
 
 	public enum ScaleType {
 		HorizontalUp, VerticalRight
+	}
+	
+	@Override
+	public boolean hasTooltip() {
+		return false;
+	}
+
+	@Override
+	public List<String> getTooltip() {
+		return null;
 	}
 }

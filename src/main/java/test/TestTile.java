@@ -7,6 +7,7 @@ import net.minecraft.entity.player.InventoryPlayer;
 import net.minecraft.inventory.Container;
 import net.minecraft.inventory.IInventory;
 import net.minecraft.inventory.Slot;
+import net.minecraft.network.Packet;
 import net.minecraftforge.fml.client.FMLClientHandler;
 import technocore.block.tileentity.TechnoCoreTileEntity;
 import technocore.gui.slot.GuiSlot;
@@ -33,5 +34,4 @@ public class TestTile extends TechnoCoreTileEntity {
 	public Container getContainer(InventoryPlayer player) {
 		return new ContainerTest(this, player).addSlot(new GuiSlot(20, 20, 0, 0, player));
 	}
-
 }

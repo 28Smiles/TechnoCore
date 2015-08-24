@@ -2,6 +2,7 @@ package technocore.client.gui.elements;
 
 import java.awt.Dimension;
 import java.awt.Point;
+import java.util.List;
 
 import org.lwjgl.opengl.GL11;
 
@@ -9,7 +10,7 @@ import technocore.client.gui.TechnoCoreGui;
 import net.minecraft.client.Minecraft;
 import net.minecraft.util.ResourceLocation;
 
-public class Element {
+public class Element implements IElement {
 
 	protected ResourceLocation img;
 	protected Point pos;
@@ -24,6 +25,7 @@ public class Element {
 		size = new Dimension(sx, sy);
 	}
 
+	@Override
 	public void draw(TechnoCoreGui parent, int x, int y)
 	{
 		if(visible)
@@ -58,5 +60,26 @@ public class Element {
 	public Element setVisible(boolean v) {
 		this.visible = v;
 		return this;
+	}
+
+	@Override
+	public void drawForegroundLayer(TechnoCoreGui parent, int mouseX, int mouseY) {}
+
+	@Override
+	public boolean hasTooltip() {
+		return false;
+	}
+
+	@Override
+	public List<String> getTooltip() {
+		return null;
+	}
+
+	@Override
+	public boolean isMouseOver(TechnoCoreGui parent, int mouseX, int mouseY) {
+		if(mouseX >= (int)this.pos.getX() && mouseX <= (int)(this.pos.getX() + this.size.getWidth()) &&
+				mouseY >= (int)this.pos.getY() && mouseY <= (int)(this.pos.getY() + this.size.getHeight()))
+			return true;
+		return false;
 	}
 }
