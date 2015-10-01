@@ -4,9 +4,12 @@ import org.apache.logging.log4j.Logger;
 
 import technocore.client.gui.GuiHandler;
 import technocore.event.EventHandler;
+import technocore.mechanic.fluid.pipe.TileFluidPipe;
+import technocore.multiblock.MultiBlockRegistry;
 import technocore.multiblock.events.MultiBlockEventHandler;
 import technocore.networking.PacketHandler;
 import technocore.networking.packets.PacketTileEntity;
+import net.minecraftforge.common.MinecraftForge;
 import net.minecraftforge.fml.common.FMLCommonHandler;
 import net.minecraftforge.fml.common.Mod;
 import net.minecraftforge.fml.common.event.FMLPostInitializationEvent;
@@ -32,6 +35,9 @@ public class TechnoCore {
 		PacketHandler.instance.initialize();
 		FMLCommonHandler.instance().bus().register(EventHandler.instance);
 		FMLCommonHandler.instance().bus().register(MultiBlockEventHandler.instance);
+		FMLCommonHandler.instance().bus().register(MultiBlockRegistry.INSTANCE);
+		MinecraftForge.EVENT_BUS.register(MultiBlockRegistry.INSTANCE);
+		FMLCommonHandler.instance().bus().register(TileFluidPipe.Swapper.INSTANCE);
 		PacketHandler.instance.registerPacket(PacketTileEntity.class);
 	}
 	

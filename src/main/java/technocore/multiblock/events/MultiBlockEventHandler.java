@@ -6,7 +6,9 @@ import java.util.List;
 import technocore.TechnoCore;
 import technocore.datavalues.BlockPos;
 import technocore.multiblock.IMultiblock;
+import technocore.multiblock.IMultiblockPart;
 import technocore.multiblock.MultiBlockRegistry;
+import technocore.multiblock.MultiBlockStructure;
 import net.minecraft.block.state.IBlockState;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraftforge.fml.common.FMLCommonHandler;
@@ -21,8 +23,8 @@ public class MultiBlockEventHandler {
 	public void multiblockPartPlaced(MultiblockPartPlacedEvent event) {
 		if(FMLCommonHandler.instance().getEffectiveSide().equals(Side.SERVER)) {
 			List<BlockPos> posList = event.multiBlockTile.searchForMultiblockParts(event.world, new ArrayList<BlockPos>());
-			if(event.multiBlockTile.getMultiBlock() != null)
-				if(event.multiBlockTile.getMultiBlock().hashCode() == posList.toArray(new BlockPos[posList.size()]).hashCode())
+			if(event.multiBlockTile.getMultiBlockParts() != null)
+				if(event.multiBlockTile.getMultiBlockParts().hashCode() == posList.toArray(new BlockPos[posList.size()]).hashCode())
 					return;
 			BlockPos minPos;
 			BlockPos maxPos;
@@ -55,14 +57,16 @@ public class MultiBlockEventHandler {
 			
 			for(BlockPos pos : posList)
 				potentiualMultiblock[pos.getX() - minPos.getX()][pos.getY() - minPos.getY()][pos.getZ() - minPos.getZ()] = event.world.getBlockState(pos);
-			IBlockState[][][] multiblock = MultiBlockRegistry.checkStructures(potentiualMultiblock);
+			MultiBlockStructure multiblock = MultiBlockRegistry.INSTANCE.checkStructures(potentiualMultiblock);
+			IMultiblock multiblockTile = multiblock.multiblockTile.createNewInstance();
+			multiblockTile.setParts(posList.toArray(new BlockPos[posList.size()]));
+			multiblockTile.setWorld(event.world);
+			multiblockTile.initialize();
 			if(multiblock != null) {
 				for(BlockPos pos : posList) {
-					((IMultiblock)event.world.getTileEntity(pos)).disableMultiblock();
-					((IMultiblock)event.world.getTileEntity(pos)).setMultiblock(posList.toArray(new BlockPos[posList.size()]));
-					((IMultiblock)event.world.getTileEntity(pos)).activateMultiblock();
+					((IMultiblockPart)event.world.getTileEntity(pos)).setMultiblockParts(posList.toArray(new BlockPos[posList.size()]));
+					((IMultiblockPart)event.world.getTileEntity(pos)).setMultiblockTile(multiblockTile);
 				}
-				((IMultiblock)event.world.getTileEntity(posList.get(0))).setHost();
 			}
 		} else {
 			TechnoCore.log.warn("MultiblockPartPlacedEvent on wrong side detected!");
@@ -73,15 +77,15 @@ public class MultiBlockEventHandler {
 	@SubscribeEvent
 	public void multiblockPartDelete(MultiblockPartDeleteEvent event) {
 		if(event.multiBlockTile.isMultiblockPart())
-			for(BlockPos pos : event.multiBlockTile.getMultiBlock()) {
+			for(BlockPos pos : event.multiBlockTile.getMultiBlockParts()) {
 				TileEntity tile = event.world.getTileEntity(pos);
-					if(tile != null && tile instanceof IMultiblock)
-							((IMultiblock)tile).disableMultiblock();
+					if(tile != null && tile instanceof IMultiblockPart)
+							((IMultiblockPart)tile).destroyMultiblock();
 			}
 		for(BlockPos pos : event.multiBlockTile.getPos().getNeighbors()) {
 			TileEntity tile = event.world.getTileEntity(pos);
-			if(tile instanceof IMultiblock) {
-				((IMultiblock)tile).disableMultiblock();
+			if(tile instanceof IMultiblockPart) {
+				((IMultiblockPart)tile).destroyMultiblock();
 				tile.validate();
 			}
 		}

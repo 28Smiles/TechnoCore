@@ -21,6 +21,7 @@ import net.minecraft.network.NetHandlerPlayServer;
 import net.minecraft.network.Packet;
 import net.minecraft.network.PacketBuffer;
 import net.minecraft.tileentity.TileEntity;
+import net.minecraft.util.BlockPos;
 import net.minecraft.world.World;
 import net.minecraftforge.fml.common.FMLCommonHandler;
 import net.minecraftforge.fml.common.network.FMLEmbeddedChannel;
@@ -163,6 +164,11 @@ public class PacketHandler extends MessageToMessageCodec<FMLProxyPacket, PacketB
 	      .set(new NetworkRegistry.TargetPoint(paramTileEntity
 	      .getWorld().provider.getDimensionId(), paramTileEntity.getPos().getX(), paramTileEntity.getPos().getY(), paramTileEntity.getPos().getZ(), 192.0D));
 	    ((FMLEmbeddedChannel)instance.channels.get(Side.SERVER)).writeAndFlush(paramPacketBase);
+	  }
+
+	  public static void sendToAllAround(PacketBase paramPacketBase, World paramWorld, BlockPos pos)
+	  {
+		  sendToAllAround(paramPacketBase, paramWorld, pos.getX(), pos.getY(), pos.getZ());
 	  }
 
 	  public static void sendToAllAround(PacketBase paramPacketBase, World paramWorld, int paramInt1, int paramInt2, int paramInt3)

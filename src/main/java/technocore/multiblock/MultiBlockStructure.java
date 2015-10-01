@@ -13,18 +13,15 @@ import net.minecraft.world.World;
 public class MultiBlockStructure {
 	
 	public IBlockState[][][][] multiblock;
+	public IMultiblock multiblockTile;
 	
-	public MultiBlockStructure(IBlockState[][][] multiblock) {
+	public MultiBlockStructure(IBlockState[][][] multiblock, IMultiblock mb) {
 		this.multiblock = new IBlockState[4][][][];
 		this.multiblock[0] = multiblock.clone();
 		this.multiblock[1] = rotatePlainRight(multiblock).clone();
 		this.multiblock[2] = rotatePlainRight(this.multiblock[1]).clone();
 		this.multiblock[3] = rotatePlainRight(this.multiblock[2]).clone();
-	}
-	
-	public boolean isMultiBlock(IMultiblock[][][] multiblocks) {
-		IBlockState[][][] multiblock = translate(multiblocks);
-		return contains(multiblock) != -1;
+		multiblockTile = mb;
 	}
 	
 	public int contains(IBlockState[][][] multiblock) {
@@ -87,22 +84,6 @@ public class MultiBlockStructure {
 		return bma;
 	}
 	
-	public static IBlockState[][][] translate(IMultiblock[][][] multiblocks) {
-		IBlockState[][][] bma = new IBlockState[multiblocks.length][][];
-		for(int i = 0; i < multiblocks.length; i++) {
-			bma[i] = new IBlockState[multiblocks[i].length][];
-			for(int j = 0; j < multiblocks[i].length; j++) {
-				bma[i][j] = new IBlockState[multiblocks[i][j].length];
-				for(int k = 0; k < multiblocks[i][j].length; k++)
-					if(multiblocks[i][j][k] != null)
-						bma[i][j][k] = multiblocks[i][j][k].getBlockState();
-					else
-						bma[i][j][k] = null;
-			}
-		}
-		return bma;
-	}
-	
 	@Override
 	public boolean equals(Object obj) {
 		if(obj instanceof MultiBlockStructure) {
@@ -139,6 +120,6 @@ public class MultiBlockStructure {
 	
 	@Override
 	public MultiBlockStructure clone() {
-		return new MultiBlockStructure(multiblock[0].clone());
+		return new MultiBlockStructure(multiblock[0].clone(), multiblockTile.createNewInstance());
 	}
 }

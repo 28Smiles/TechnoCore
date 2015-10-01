@@ -5,6 +5,7 @@ import java.util.ArrayList;
 import technocore.TechnoCore;
 import technocore.block.container.TechnoCoreContainer;
 import technocore.datavalues.Localization;
+import technocore.networking.IPacketHandler;
 import technocore.networking.PacketHandler;
 import technocore.networking.packets.PacketTechno;
 import technocore.networking.packets.PacketTileEntity;
@@ -28,8 +29,9 @@ import net.minecraft.world.World;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
 
-public abstract class TechnoCoreTileEntity extends TileEntity {
+public abstract class TechnoCoreTileEntity extends TileEntity implements IPacketHandler {
 
+	@Override
 	public void handlePacket(PacketTechno packet)
 	{
 		switch (packet.getByte()) {
