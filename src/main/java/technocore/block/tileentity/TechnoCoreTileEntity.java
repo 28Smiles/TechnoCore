@@ -29,7 +29,7 @@ import net.minecraft.world.World;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
 
-public abstract class TechnoCoreTileEntity extends TileEntity implements IPacketHandler {
+public abstract class TechnoCoreTileEntity extends TileEntity implements IPacketHandler, IGuiProvider {
 
 	@Override
 	public void handlePacket(PacketTechno packet)

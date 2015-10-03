@@ -2,6 +2,7 @@ package technocore.client.gui;
 
 import java.awt.Dimension;
 import java.awt.Point;
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -10,12 +11,14 @@ import org.lwjgl.opengl.GL11;
 
 import technocore.TechnoCore;
 import technocore.block.container.TechnoCoreContainer;
+import technocore.block.tileentity.IGuiProvider;
 import technocore.block.tileentity.TechnoCoreTileEntity;
 import technocore.client.gui.elements.Element;
 import technocore.client.gui.elements.IElement;
 import technocore.gui.slot.GuiSlot;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.Gui;
+import net.minecraft.client.gui.GuiButton;
 import net.minecraft.client.gui.ScaledResolution;
 import net.minecraft.client.gui.inventory.GuiContainer;
 import net.minecraft.client.renderer.Tessellator;
@@ -24,20 +27,20 @@ import net.minecraft.init.Blocks;
 import net.minecraft.init.Items;
 import net.minecraft.inventory.Container;
 import net.minecraft.inventory.IInventory;
+import net.minecraft.inventory.Slot;
 import net.minecraft.item.ItemStack;
+import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.EnumChatFormatting;
 import net.minecraft.util.ResourceLocation;
 
 public class TechnoCoreGui extends GuiContainer {
 
 	protected List<IElement> elements = new ArrayList<IElement>();
-	protected TechnoCoreTileEntity tile;
 	protected IInventory player;
 	protected ResourceLocation texture = new ResourceLocation(TechnoCore.MODID, "textures/gui/normal.png");
 
-	public TechnoCoreGui(TechnoCoreTileEntity tile, IInventory player) {
+	public TechnoCoreGui(IGuiProvider tile, IInventory player) {
 		super(tile.getContainer((InventoryPlayer)player));
-		this.tile = tile;
 		this.player = player;
 	}
 
@@ -104,7 +107,18 @@ public class TechnoCoreGui extends GuiContainer {
 			}
 		}
 	}
-	
+
+	@Override
+	protected void mouseClicked(int x, int y, int event) throws IOException {
+		super.mouseClicked(x, y, event);
+	}
+
+	@Override
+	protected void actionPerformed(GuiButton arg0) throws IOException
+	{
+		super.actionPerformed(arg0);
+	}
+
 	public void drawSizedModalRect(int paramInt1, int paramInt2, int paramInt3, int paramInt4, int paramInt5)
 	{
 		int i;
