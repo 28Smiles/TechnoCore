@@ -15,6 +15,7 @@ import technocore.block.tileentity.IGuiProvider;
 import technocore.block.tileentity.TechnoCoreTileEntity;
 import technocore.client.gui.elements.Element;
 import technocore.client.gui.elements.IElement;
+import technocore.client.gui.elements.Widget;
 import technocore.gui.slot.GuiSlot;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.Gui;
@@ -36,6 +37,7 @@ import net.minecraft.util.ResourceLocation;
 public class TechnoCoreGui extends GuiContainer {
 
 	protected List<IElement> elements = new ArrayList<IElement>();
+	protected List<Widget> widgets = new ArrayList<Widget>();
 	protected IInventory player;
 	protected ResourceLocation texture = new ResourceLocation(TechnoCore.MODID, "textures/gui/normal.png");
 
@@ -79,6 +81,17 @@ public class TechnoCoreGui extends GuiContainer {
 		GL11.glColor4f(1.0F, 1.0F, 1.0F, 1.0F);
 		int l = (width - xSize) / 2;
 		int i1 = (height - ySize) / 2;
+
+		for(Widget widget : widgets)
+			if(widget.getOpen() == false && widget.getComputePos().length() > 0)
+				widget.draw(this, arg1, arg2);
+		for(Widget widget : widgets)
+			if(widget.getComputePos().length() > 0)
+				widget.draw(this, arg1, arg2);
+		for(Widget widget : widgets)
+			if(widget.getComputePos().length() <= 0)
+				widget.draw(this, arg1, arg2);
+
 		this.mc.getTextureManager().bindTexture(texture);
 		this.drawTexturedModalRect(l, i1, 0, 0, xSize, ySize);
 
@@ -97,26 +110,45 @@ public class TechnoCoreGui extends GuiContainer {
 		int i1 = (height - ySize) / 2;
 		mouseX -= l;
 		mouseY -= i1;
+		for(Widget widget : widgets)
+			widget.drawForegroundLayer(this, mouseX, mouseY);
 		for(IElement e : elements)
-		{
 			e.drawForegroundLayer(this, mouseX, mouseY);
 
+		for(IElement e : elements)
 			if(e.hasTooltip() && e.isMouseOver(this, mouseX, mouseY) && e.getTooltip() != null)
-			{
 				renderToolTip(e.getTooltip(), mouseX, mouseY);
+		for(Widget w : widgets)
+			if(w.hasTooltip() && w.isMouseOver(this, mouseX, mouseY) && w.getTooltip() != null)
+			{
+				renderToolTip(w.getTooltip(), mouseX, mouseY);
+				return;
 			}
-		}
 	}
 
 	@Override
 	protected void mouseClicked(int x, int y, int event) throws IOException {
+		int l = (width - xSize) / 2;
+		int i1 = (height - ySize) / 2;
+		x -= l;
+		y -= i1;
+		for(Widget widget : widgets)
+			if(widget.isMouseOver(this, x, y))
+			{
+				widget.onClick();
+				if(widget.getOpen())
+					for(Widget w : widgets)
+						if(w != widget)
+							w.close();
+				return;
+			}
 		super.mouseClicked(x, y, event);
 	}
 
 	@Override
-	protected void actionPerformed(GuiButton arg0) throws IOException
+	protected void actionPerformed(GuiButton button) throws IOException
 	{
-		super.actionPerformed(arg0);
+		super.actionPerformed(button);
 	}
 
 	public void drawSizedModalRect(int paramInt1, int paramInt2, int paramInt3, int paramInt4, int paramInt5)
@@ -208,5 +240,15 @@ public class TechnoCoreGui extends GuiContainer {
 
 	public int getYSize() {
 		return ySize;
+	}
+
+	public TechnoCoreGui addElement(IElement element) {
+		elements.add(element);
+		return this;
+	}
+
+	public TechnoCoreGui addWidget(Widget widget) {
+		widgets.add(widget);
+		return this;
 	}
 }

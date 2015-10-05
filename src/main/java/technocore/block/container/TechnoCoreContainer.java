@@ -12,7 +12,7 @@ import net.minecraft.inventory.ICrafting;
 import net.minecraft.inventory.Slot;
 import net.minecraft.item.ItemStack;
 
-public abstract class TechnoCoreContainer extends Container {
+public class TechnoCoreContainer extends Container {
 
 	protected final TechnoCoreTileEntity technoTile;
 	protected final InventoryPlayer inventoryPlayer;

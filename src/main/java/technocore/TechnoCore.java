@@ -9,6 +9,8 @@ import technocore.multiblock.MultiBlockRegistry;
 import technocore.multiblock.events.MultiBlockEventHandler;
 import technocore.networking.PacketHandler;
 import technocore.networking.packets.PacketTileEntity;
+import technocore.test.TestTileGui;
+import technocore.test.TestTileGui.TileGuiTest;
 import net.minecraftforge.common.MinecraftForge;
 import net.minecraftforge.fml.common.FMLCommonHandler;
 import net.minecraftforge.fml.common.Mod;
@@ -39,6 +41,8 @@ public class TechnoCore {
 		MinecraftForge.EVENT_BUS.register(MultiBlockRegistry.INSTANCE);
 		FMLCommonHandler.instance().bus().register(TileFluidPipe.Swapper.INSTANCE);
 		PacketHandler.instance.registerPacket(PacketTileEntity.class);
+
+		TestTileGui.init();
 	}
 	
 	@net.minecraftforge.fml.common.Mod.EventHandler
