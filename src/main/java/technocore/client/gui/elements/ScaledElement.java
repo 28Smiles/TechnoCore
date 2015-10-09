@@ -28,11 +28,11 @@ public class ScaledElement extends Element {
 			Minecraft.getMinecraft().renderEngine.bindTexture(img);
 			Point topLeft = parent.getTopLeftCorner();
 			GL11.glColor4f(1.0F, 1.0F, 1.0F, 1.0F);
-			parent.drawSizedTexturedModalRect(topLeft.x + pos.x, topLeft.y + pos.y, 0, 0, 24, 16, 48F, 16F);
+			parent.drawSizedTexturedModalRect(topLeft.x + pos.x + (int)offset.x, topLeft.y + pos.y + (int)offset.y, 0, 0, 24, 16, 48F, 16F);
 			if(type.equals(ScaleType.HorizontalUp))
-				parent.drawSizedTexturedModalRect(topLeft.x + pos.x, (topLeft.y + pos.y) - scale, posImg.x + 24, posImg.y - scale, size.width, scale, 48F, 16F);
+				parent.drawSizedTexturedModalRect(topLeft.x + pos.x + (int)offset.x, (topLeft.y + pos.y + (int)offset.y) - scale, posImg.x + 24, posImg.y - scale, size.width, scale, 48F, 16F);
 			if(type.equals(ScaleType.VerticalRight))
-				parent.drawSizedTexturedModalRect(topLeft.x + pos.x, topLeft.y + pos.y, posImg.x + 24, posImg.y, scale, size.height, 48F, 16F);
+				parent.drawSizedTexturedModalRect(topLeft.x + pos.x + (int)offset.x, topLeft.y + pos.y + (int)offset.y, posImg.x + 24, posImg.y, scale, size.height, 48F, 16F);
 		}
 	}
 

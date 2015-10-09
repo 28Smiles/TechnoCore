@@ -71,7 +71,7 @@ public class TechnoCoreGui extends GuiContainer {
         return getMousePosition(Mouse.getX(), Mouse.getY());
     }
     
-    protected void renderToolTip(List tooltip, int p_renderToolTip_2_, int p_renderToolTip_3_)
+    public void renderToolTip(List tooltip, int p_renderToolTip_2_, int p_renderToolTip_3_)
     {
         drawHoveringText(tooltip, p_renderToolTip_2_, p_renderToolTip_3_  - ((tooltip.size() - 1) * 11));
     }

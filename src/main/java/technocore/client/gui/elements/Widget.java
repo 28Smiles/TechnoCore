@@ -28,7 +28,7 @@ public class Widget implements IElement {
 	private Dimension computeSize = imgSizeClosed;
 	private long lastTime;
 
-	private List<IElement> content = new ArrayList<IElement>();
+	private List<IExtendedElement> content = new ArrayList<IExtendedElement>();
 	private List<String> tooltip;
 
 	public Widget(Point position, List<String> tooltip, ResourceLocation image) {
@@ -71,21 +71,37 @@ public class Widget implements IElement {
 
 		parent.mc.getTextureManager().bindTexture(image);
 		Point topLeft = parent.getTopLeftCorner();
-		parent.drawSizedTexturedModalRect((int)topLeft.getX() + (int)position.getX(), (int)topLeft.getY() + (int)position.getY() + (int)computePosition.getY(), (int)imgPosClosed.getX() - (int)computePosition.getX(), 0, (int)imgSizeClosed.getWidth() + (int)computePosition.getX(), (int)imgSizeOpen.getHeight(), 112F, 140F);
+		parent.drawSizedTexturedModalRect((int)topLeft.getX() + (int)position.getX(), (int)topLeft.getY() + (int)position.getY() + (int)computePosition.getY(), (int)imgPosClosed.getX() - (int)computePosition.getX(), 0, (int)imgSizeClosed.getWidth() + (int)computePosition.getX(), (int)imgSizeOpen.getHeight(), (float)imgSizeOpen.getWidth(), (float)imgSizeOpen.getHeight());
 
-		
+		Vector2f offset = new Vector2f(computePosition);
+		offset.add(new Vector2f(position.x - imgSizeOpen.width + imgSizeClosed.width, position.y));
+		offset = new Vector2f((int)offset.x, (int)offset.y);
+
+		for(IExtendedElement e : content)
+		{
+			e.setOffset(offset);
+			if(e.getPosition().x >= (imgSizeOpen.width - imgSizeClosed.width) - computePosition.x - e.getSize().width)
+				e.draw(parent, mouseX, mouseY);
+		}
+		for(IExtendedElement e : content)
+		{
+			if(e.getPosition().x >= (imgSizeOpen.width - imgSizeClosed.width) - computePosition.x - e.getSize().width)
+				e.drawForegroundLayer(parent, mouseX, mouseY);
+		}
 	}
 
 	public void drawForegroundLayer(TechnoCoreGui parent, int mouseX, int mouseY)
 	{
-		for(IElement e : content)
-		{
-			e.draw(parent, mouseX, mouseY);
-		}
-		for(IElement e : content)
-		{
-			e.drawForegroundLayer(parent, mouseX, mouseY);
-		}
+		for(IExtendedElement e : content)
+			if(e.getPosition().x >= (imgSizeOpen.width - imgSizeClosed.width) - computePosition.x - e.getSize().width)
+				if(e.hasTooltip() && e.isMouseOver(parent, mouseX, mouseY) && e.getTooltip() != null)
+					parent.renderToolTip(e.getTooltip(), mouseX, mouseY);
+	}
+
+	public Widget addElement(IExtendedElement element)
+	{
+		content.add(element);
+		return this;
 	}
 
 	public boolean hasTooltip()

@@ -71,7 +71,9 @@ public class TestTileGui {
 			return new TechnoCoreGui(this, player).addElement(new ScaledElement(40, 20).setScaleType(ScaleType.VerticalRight).scale(10).setTexture("technocore", "textures/gui/elements/arrow_right.png"))
 					.addWidget(new Widget(new Point(176, 0), l, new ResourceLocation("technocore", "textures/gui/widget/normal.png")))
 					.addWidget(new Widget(new Point(176, 24), li, new ResourceLocation("technocore", "textures/gui/widget/normal.png")))
-					.addWidget(new Widget(new Point(176, 48), lis, new ResourceLocation("technocore", "textures/gui/widget/normal.png")));
+					.addWidget(new Widget(new Point(176, 48), lis, new ResourceLocation("technocore", "textures/gui/widget/normal.png"))
+						.addElement(new ScaledElement(20, 10).setScaleType(ScaleType.VerticalRight).scale(10).setTexture("technocore", "textures/gui/elements/arrow_right.png"))
+						.addElement(new ScaledElement(40, 120).setScaleType(ScaleType.VerticalRight).scale(20).setTexture("technocore", "textures/gui/elements/arrow_right.png")));
 		}
 
 		@Override
